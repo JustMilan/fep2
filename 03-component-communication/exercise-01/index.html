@@ -8,6 +8,26 @@
   <script src="index.js"></script>
 </head>
 
+<style>
+
+  .light-switch {
+    display: block;
+    height: 100px;
+    width: 100px;
+    border: 1px solid #333;
+    border-radius: 50%;
+  }
+
+  .light-switch:not([show]) {
+    background-color: grey;
+  }
+
+  .light-switch[show] {
+    background-color: yellow;
+  }
+</style>
+
+
 <body>
 
   <header>
@@ -15,7 +35,10 @@
   </header>
 
   <main>
-  
+
+    <light-switch></light-switch>
+    <light-switch></light-switch>
+    <light-switch></light-switch>
 
   </main>
 
