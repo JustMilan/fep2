@@ -7,12 +7,15 @@ class Switch extends HTMLElement {
         const lightBulbDiv = document.createElement('div');
         lightBulbDiv.className = "light-switch";
         lightBulbDiv.id = "bulb";
+
         const lightBulbButton = document.createElement('button');
         lightBulbButton.className = "switch";
         lightBulbButton.textContent = "Turn on/off"
         lightBulbButton.id = "lightBulbButton";
+
         this.appendChild(lightBulbDiv)
         this.appendChild(lightBulbButton)
+
         lightBulbButton.addEventListener("click", this.changeColor)
     }
 
@@ -25,7 +28,6 @@ class Switch extends HTMLElement {
             bulb.style.backgroundColor = "grey"
         }
     }
-
 }
 
 window.customElements.define('light-switch', Switch)

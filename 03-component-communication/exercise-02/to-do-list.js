@@ -12,6 +12,8 @@ class TodoList extends HTMLElement {
 
     connectedCallback() {
         this.appendChild(template.content.cloneNode(true))
+
+        console.log(this.querySelector("#todos"))
     }
 }
 
