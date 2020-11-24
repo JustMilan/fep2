@@ -10,11 +10,26 @@ class TodoItem extends HTMLElement {
         super();
     }
 
+    static get observedAttributes() {
+        return ['checked'];
+    }
+
     connectedCallback() {
         this.appendChild(template.content.cloneNode(true))
 
         this._renderTodoItem();
+
+        this.addEventListener("click", this.test);
     }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (name === 'checked') {
+            // console.log("in attributeChangedCallback")
+            const changedTodoEvent = new CustomEvent("changedTodo", {bubbles: true, detail: this.getAttribute("index")});
+            this.dispatchEvent(changedTodoEvent);
+        }
+    }
+
 
     _renderTodoItem() {
         if (this.hasAttribute('checked')) {
@@ -24,6 +39,18 @@ class TodoItem extends HTMLElement {
         }
 
         this.querySelector('label').innerHTML = this._text;
+    }
+
+    test() {
+        console.log("voor: ->  " + this.getAttributeNames());
+        if (this.hasAttribute('checked')) {
+            this.removeAttribute('checked');
+        } else {
+            this.setAttribute('checked', "");
+        }
+        this._renderTodoItem();
+        console.log("na: -->  " + this.getAttributeNames());
+        console.log(this.classList)
     }
 
     set index(value) {
@@ -45,5 +72,10 @@ class TodoItem extends HTMLElement {
             this.removeAttribute('checked');
         }
     }
+
+    get _text() {
+        return this.getAttribute("text");
+    }
 }
+
 window.customElements.define('to-do-item', TodoItem);

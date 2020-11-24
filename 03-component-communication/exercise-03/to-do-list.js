@@ -15,6 +15,7 @@ class ToDoList extends HTMLElement {
         `;
 
         this.querySelector('button').addEventListener('click', this._addTodo.bind(this));
+        this.addEventListener("changedTodo", event => this._toggleTodo(event));
     }
 
     _addTodo() {
@@ -29,7 +30,16 @@ class ToDoList extends HTMLElement {
     }
 
     _toggleTodo(event) {
-
+        console.log("in _toggleTodo");
+        const item = this.todos[event.detail]
+        console.log("voor toggle -->  " + item.hasOwnProperty("checked"));
+        if (item.hasOwnProperty("checked")) {
+            delete item.checked;
+        } else {
+            item.checked;
+        }
+        console.log("na toggle -->  " + item.hasOwnProperty("checked"));
+        this._renderTodoList();
     }
 
     _renderTodoList() {
