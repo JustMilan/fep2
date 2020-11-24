@@ -8,21 +8,21 @@ class ToDoList extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
         <h1>To do</h1>
-        <input type="text" placeholder="Add a new to do"></input>
+        <input type="text" placeholder="Add a new to do"/>
         <button>Voeg toe</button>
 
         <ul id="todos"></ul>
         `;
 
         this.querySelector('button').addEventListener('click', this._addTodo.bind(this));
-        this.addEventListener("changedTodo", event => this._toggleTodo(event));
+        this.addEventListener("onToggle", event => this._toggleTodo(event));
     }
 
     _addTodo() {
-        if(this.querySelector('input').value.length > 0){
+        if (this.querySelector('input').value.length > 0) {
             this._todos.push({
-                text: this.querySelector('input').value, 
-                checked: false 
+                text: this.querySelector('input').value,
+                checked: false
             })
             this._renderTodoList();
             this.querySelector('input').value = '';
@@ -30,15 +30,9 @@ class ToDoList extends HTMLElement {
     }
 
     _toggleTodo(event) {
-        console.log("in _toggleTodo");
-        const item = this.todos[event.detail]
-        console.log("voor toggle -->  " + item.hasOwnProperty("checked"));
-        if (item.hasOwnProperty("checked")) {
-            delete item.checked;
-        } else {
-            item.checked;
-        }
-        console.log("na toggle -->  " + item.hasOwnProperty("checked"));
+        const item = this.todos[event.detail];
+        item.checked = !item.checked;
+
         this._renderTodoList();
     }
 
@@ -50,7 +44,7 @@ class ToDoList extends HTMLElement {
             $todoItem.setAttribute('text', todo.text);
             // if the to do is checked, set the attribute, else; omit it.
             if (todo.checked) {
-                $todoItem.setAttribute('checked', '');                
+                $todoItem.setAttribute('checked', '');
             }
             // By setting index we have some state to keep track of the index
             // of the to do

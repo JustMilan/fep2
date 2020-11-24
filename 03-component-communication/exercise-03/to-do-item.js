@@ -17,16 +17,22 @@ class TodoItem extends HTMLElement {
     connectedCallback() {
         this.appendChild(template.content.cloneNode(true))
 
-        this._renderTodoItem();
+        this.querySelector('input').addEventListener('click', (e) => {
+            this.dispatchEvent(new CustomEvent('onToggle', {
+                detail: this.getAttribute('index'),
+                // By setting composed to true, the event will bubble outside of the Shadow DOM
+                composed: true,
+                bubbles: true
+            }));
+        });
 
-        this.addEventListener("click", this.test);
+        this._renderTodoItem();
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
         if (name === 'checked') {
-            // console.log("in attributeChangedCallback")
-            const changedTodoEvent = new CustomEvent("changedTodo", {bubbles: true, detail: this.getAttribute("index")});
-            this.dispatchEvent(changedTodoEvent);
+            console.log("in attributeChangedCallback")
+            this._checked = this.hasAttribute('checked');
         }
     }
 
@@ -34,23 +40,13 @@ class TodoItem extends HTMLElement {
     _renderTodoItem() {
         if (this.hasAttribute('checked')) {
             this.querySelector('.item').classList.add('completed');
+            this.querySelector('label').setAttribute('checked', '');
         } else {
             this.querySelector('.item').classList.remove('completed');
+            this.querySelector('label').removeAttribute('checked');
         }
 
         this.querySelector('label').innerHTML = this._text;
-    }
-
-    test() {
-        console.log("voor: ->  " + this.getAttributeNames());
-        if (this.hasAttribute('checked')) {
-            this.removeAttribute('checked');
-        } else {
-            this.setAttribute('checked', "");
-        }
-        this._renderTodoItem();
-        console.log("na: -->  " + this.getAttributeNames());
-        console.log(this.classList)
     }
 
     set index(value) {
